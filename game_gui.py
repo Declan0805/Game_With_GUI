@@ -50,6 +50,8 @@ class GameGUI:
         quit_button = ttk.Button(self.actions_frame, text="Quit", command=self.quit_game)
         quit_button.grid(row=1, column=0, padx=10, pady=20)
         save_button = ttk.Button(self.actions_frame, text="Save", command=self.save_game)
+        save_button.grid(row=1, column=1, padx=10, pady=20)
+        save_button = ttk.Button(self.actions_frame, text="Load", command=self.load_game)
         save_button.grid(row=1, column=2, padx=10, pady=20)
 
     def get_stats(self):
@@ -122,6 +124,65 @@ class GameGUI:
                 messagebox.showinfo("Game Saved", "Game data saved successfully.")
         except PermissionError:
             print("Please close out of the csv before saving the game.")
+    def load_game(self):
+        try:
+            print("Attempting to load data from game_data.csv...")
+
+            with open("game_data.csv", "r") as game_file:
+                reader = csv.reader(game_file)
+                header = next(reader, None)  # Skip the header row
+
+                # Debug: Ensure the header row is as expected
+                print(f"Header read: {header}")
+
+                # Dictionary to store player data
+                player_data = {}
+
+                # Read the body of the file
+                for row in reader:
+                    # Debug: Check each row being processed
+                    print(f"Processing row: {row}")
+
+                    if row and len(row) == 2:  # Ensure valid key-value rows
+                        key, value = row
+
+                        # Map stats to player attributes
+                        if key in ["Health", "Power", "Block Chance", "Gold"]:
+                            player_data[key.lower().replace(" ", "_")] = int(value)
+                        elif key == "Name":
+                            player_data["name"] = value
+
+                # Debug: Output the loaded data
+                print("Loaded player_data:", player_data)
+
+                # Update the player object
+                if player_data:
+                    self.player.name = player_data.get("name", "Hero")
+                    self.player.health = player_data.get("health", 100)
+                    self.player.power = player_data.get("power", 20)
+                    self.player.block_chance = player_data.get("block_chance", 25)
+                    self.player.gold = player_data.get("gold", 0)
+
+                    # Debug: Confirm player object has been updated
+                    print("Updated player stats:",
+                          self.player.name, self.player.health, self.player.power, self.player.block_chance,
+                          self.player.gold)
+
+                    # Update UI to reflect loaded stats
+                    self.update_player_stats()
+
+                    # Debug: Ensure stats frame has been updated
+                    print("Player stats displayed in UI have been updated.")
+
+                    self.start_new_scenario()
+                    messagebox.showinfo("Game Loaded", "Game data loaded successfully.")
+                else:
+                    messagebox.showerror("Load Error", "No valid data was loaded!")
+        except FileNotFoundError:
+
+            messagebox.showerror("Load Error", "Save file not found! Please save a game first.")
+        except Exception as e:
+            messagebox.showerror("Load Error", f"An error occurred while loading the game: {str(e)}")
 
 
 

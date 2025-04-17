@@ -144,9 +144,12 @@ def handle_combat(player, enemy_data):
             combat_log.append(f"The {enemy.name} blocked your attack!")
 
         # Enemy attack
-        if enemy.is_alive():
+        enemy_win_chance = random.randint(1, 100)
+        if enemy_win_chance > player.block_chance:
             player.health -= enemy.power
             combat_log.append(f"{enemy.name} attacked you for {enemy.power} damage. Your health: {player.health}")
+        else:
+            combat_log.append(f"You blocked the {enemy.name} attack.")
 
         if not player.is_alive():
             combat_log.append("Fatal Blow")
