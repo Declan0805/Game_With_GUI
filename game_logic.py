@@ -100,12 +100,9 @@ def resolve_action(player, action):
     """
     Resolves the outcome of a player's action.
 
-    Parameters:
-        player: Player object executing the action.
-        action: Action dictionary from the scenario.
+    Takes in the player object and the action dictionary.
 
-    Returns:
-        Dictionary containing the results of the action (success/failure, health, gold changes).
+    Then it returns the action dictionary and any changes to the player's health and gold.'
     """
     roll = random.randint(1, 100)
     if roll <= action["chance"]:  # Success
@@ -122,7 +119,9 @@ def resolve_action(player, action):
 
 def handle_combat(player, enemy_data):
     """
-    Handles combat scenarios and determines the outcome.
+    Handles combat scenarios and determines the outcome based on random int generation
+    Returns a dictionary with the combat outcome and combat log.
+    The combat log is a list of strings representing the combat events and their results
     """
     enemy = Enemy(
         name=enemy_data["name"],
@@ -150,7 +149,7 @@ def handle_combat(player, enemy_data):
             combat_log.append(f"{enemy.name} attacked you for {enemy.power} damage. Your health: {player.health}")
 
         if not player.is_alive():
-            combat_log.append("You were defeated! Game Over.")
+            combat_log.append("Fatal Blow")
             return {"status": "defeat", "combat_log": combat_log}
 
     # Victory logic

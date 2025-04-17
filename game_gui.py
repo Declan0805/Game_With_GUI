@@ -75,12 +75,13 @@ class GameGUI:
 
         if "enemy" in action:
             # If the action involves combat
-            combat_result = game_logic.handle_combat(self.player, action["enemy"])
+            combat_result = handle_combat(self.player, action["enemy"])
 
             # Show combat log results
             for log_entry in combat_result["combat_log"]:
                 messagebox.showinfo("Combat Log", log_entry)
             if combat_result["status"] == "defeat":
+                messagebox.showinfo("Game Over", "You Have Died")
                 self.end_game()
                 return
         else:
@@ -93,10 +94,8 @@ class GameGUI:
 
         # Check if the player is still alive
         if self.player.is_alive():
-            # Load the next scenario if the player is alive
             self.start_new_scenario()
         else:
-            # End the game if the player is dead
             self.end_game()
     def update_player_stats(self):
         """Updates the player stats in the UI."""
