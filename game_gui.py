@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
+import csv
 import game_logic
 from game_classes import Player, Enemy
 from game_logic import handle_combat, random_scenarios
@@ -9,6 +9,8 @@ class GameGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Game GUI")
+        self.root.geometry("600x400")
+        self.root.resizable(False, False)
         self.player = Player("Hero", health=100, power=20, block_chance=25, gold=0)
         self.enemy = None
         self.create_widgets()
@@ -46,7 +48,9 @@ class GameGUI:
 
         # Add Quit button
         quit_button = ttk.Button(self.actions_frame, text="Quit", command=self.quit_game)
-        quit_button.grid(row=0, column=3, padx=10)
+        quit_button.grid(row=1, column=0, padx=10, pady=20)
+        save_button = ttk.Button(self.actions_frame, text="Save", command=self.save_game)
+        save_button.grid(row=1, column=2, padx=10, pady=20)
 
     def get_stats(self):
         return f"Player: {self.player.name}, HP: {self.player.health}, Power: {self.player.power}, Block Chance: {self.player.block_chance}, Gold: {self.player.gold}"
@@ -108,6 +112,18 @@ class GameGUI:
         confirm = messagebox.askyesno("Quit Game", "Are you sure you want to quit?")
         if confirm:
             self.root.quit()  # Close the application
+    def save_game(self):
+        try:
+            with open("game_data.csv", "w", newline="") as game_file:
+                writer = csv.writer(game_file)
+
+                writer.writerow(["Name", "Health", "Power", "Block Chance", "Gold"])
+                writer.writerow([self.player.name, self.player.health, self.player.power, self.player.block_chance, self.player.gold])
+
+                messagebox.showinfo("Game Saved", "Game data saved successfully.")
+        except PermissionError:
+            print("Please close out of the csv before saving the game.")
+
 
 
 if __name__ == "__main__":
