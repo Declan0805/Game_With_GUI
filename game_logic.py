@@ -16,7 +16,7 @@ class Item:
         return self.name
 
 
-def random_scenarios(player):
+def random_scenarios(player) -> dict:
     """
     Returns a random scenario with weighted probabilities.
     """
@@ -96,7 +96,7 @@ def random_scenarios(player):
 
 
 
-def resolve_action(player, action):
+def resolve_action(player, action) -> dict:
     """
     Resolves the outcome of a player's action.
 
@@ -117,7 +117,7 @@ def resolve_action(player, action):
         return {"result": "failure", "description": result["description"]}
 
 
-def handle_combat(player, enemy_data):
+def handle_combat(player, enemy_data) -> dict:
     """
     Handles combat scenarios and determines the outcome based on random int generation
     Returns a dictionary with the combat outcome and combat log.

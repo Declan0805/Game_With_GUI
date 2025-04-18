@@ -5,6 +5,16 @@ import game_logic
 from game_classes import Player, Enemy
 from game_logic import handle_combat, random_scenarios
 
+
+"""
+All buttons and general window information came from me
+The aesthetic elements were sourced partly but not entirely by an AI source
+Errors in SaveGame and LoadGame logic were partly aided but AI but AI got a decent amount of it wrong so I did most of the work in the end
+All Scenario information was done by me unless any major errors occurred in the code that I couldn't weed through
+This was the 5th attempt so there was a ton of copy and pasting and major editing to be done from previous versions
+This was the first version to be uploaded to github once I decided it was the proper direction
+
+"""
 class GameGUI:
     def __init__(self, root):
         self.root = root
@@ -54,7 +64,7 @@ class GameGUI:
         save_button = ttk.Button(self.actions_frame, text="Load", command=self.load_game)
         save_button.grid(row=1, column=2, padx=10, pady=20)
 
-    def get_stats(self):
+    def get_stats(self) -> str:
         return f"Player: {self.player.name}, HP: {self.player.health}, Power: {self.player.power}, Block Chance: {self.player.block_chance}, Gold: {self.player.gold}"
 
     def start_new_scenario(self):
@@ -91,10 +101,9 @@ class GameGUI:
             result = game_logic.resolve_action(self.player, action)
             messagebox.showinfo("Action Result", result["description"])
 
-        # Update player stats in the UI after resolving the action
         self.update_player_stats()
 
-        # Check if the player is still alive
+        # Check Player Status
         if self.player.is_alive():
             self.start_new_scenario()
         else:
@@ -109,10 +118,10 @@ class GameGUI:
         messagebox.showinfo("Game Over", "Thanks for playing!")
         self.root.quit()
     def quit_game(self):
-        """Safely quit the game."""
+
         confirm = messagebox.askyesno("Quit Game", "Are you sure you want to quit?")
         if confirm:
-            self.root.quit()  # Close the application
+            self.root.quit()  # Close the window
     def save_game(self):
         try:
             with open("game_data.csv", "w", newline="") as game_file:
@@ -124,64 +133,54 @@ class GameGUI:
                 messagebox.showinfo("Game Saved", "Game data saved successfully.")
         except PermissionError:
             print("Please close out of the csv before saving the game.")
+        """
+        Game load logic below:
+        This will pull from the game_data.csv file and load the data into the current player's stats.
+        As of right now the game data only has room for one save game
+        This means it will only pull from one save game at a time
+        This also means any save made will overwrite the previous save
+        """
     def load_game(self):
         try:
-            print("Attempting to load data from game_data.csv...")
-
             with open("game_data.csv", "r") as game_file:
                 reader = csv.reader(game_file)
-                header = next(reader, None)  # Skip the header row
 
-                # Debug: Ensure the header row is as expected
-                print(f"Header read: {header}")
 
-                # Dictionary to store player data
-                player_data = {}
+                header = next(reader, None)
 
-                # Read the body of the file
-                for row in reader:
-                    # Debug: Check each row being processed
-                    print(f"Processing row: {row}")
+                second_row = next(reader, None)  # Get the second row
 
-                    if row and len(row) == 2:  # Ensure valid key-value rows
-                        key, value = row
+                if not second_row or len(second_row) != 5:
+                    messagebox.showerror("Load Error", "Invalid data in the save file! Information most likely missing or corrupted.")
+                    return
 
-                        # Map stats to player attributes
-                        if key in ["Health", "Power", "Block Chance", "Gold"]:
-                            player_data[key.lower().replace(" ", "_")] = int(value)
-                        elif key == "Name":
-                            player_data["name"] = value
+                # Loading the stats to the current player's stats
+                name, health, power, block_chance, gold = second_row
+                self.player.name = name
+                self.player.health = int(health)
+                self.player.power = int(power)
+                self.player.block_chance = int(block_chance)
+                self.player.gold = int(gold)
 
-                # Debug: Output the loaded data
-                print("Loaded player_data:", player_data)
 
-                # Update the player object
-                if player_data:
-                    self.player.name = player_data.get("name", "Hero")
-                    self.player.health = player_data.get("health", 100)
-                    self.player.power = player_data.get("power", 20)
-                    self.player.block_chance = player_data.get("block_chance", 25)
-                    self.player.gold = player_data.get("gold", 0)
+                self.update_player_stats()
+                self.start_new_scenario()
 
-                    # Debug: Confirm player object has been updated
-                    print("Updated player stats:",
-                          self.player.name, self.player.health, self.player.power, self.player.block_chance,
-                          self.player.gold)
-
-                    # Update UI to reflect loaded stats
-                    self.update_player_stats()
-
-                    # Debug: Ensure stats frame has been updated
-                    print("Player stats displayed in UI have been updated.")
-
-                    self.start_new_scenario()
-                    messagebox.showinfo("Game Loaded", "Game data loaded successfully.")
-                else:
-                    messagebox.showerror("Load Error", "No valid data was loaded!")
+                messagebox.showinfo("Game Loaded", "Game data loaded successfully!")
+            """
+            Any errors that occur during loading should be handled below.
+            Most common ones have been singled out
+            Any miscellaneous/uncommon errors have been accounted for by Exception as e
+            """
         except FileNotFoundError:
-
             messagebox.showerror("Load Error", "Save file not found! Please save a game first.")
+        except ValueError as e:
+            print(e)
+            messagebox.showerror("Load Error", "Invalid numerical values in the save file!")
+        except PermissionError:
+            messagebox.showerror("Load Error", "Please close out of the csv before loading the game.")
         except Exception as e:
+            print(e)
             messagebox.showerror("Load Error", f"An error occurred while loading the game: {str(e)}")
 
 
