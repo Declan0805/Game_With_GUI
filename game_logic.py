@@ -17,9 +17,6 @@ class Item:
 
 
 def random_scenarios(player) -> dict:
-    """
-    Returns a random scenario with weighted probabilities.
-    """
     scenarios = {
         1: {
             "description": "You encounter a group of goblins ambushing the road ahead!",
@@ -118,11 +115,7 @@ def resolve_action(player, action) -> dict:
 
 
 def handle_combat(player, enemy_data) -> dict:
-    """
-    Handles combat scenarios and determines the outcome based on random int generation
-    Returns a dictionary with the combat outcome and combat log.
-    The combat log is a list of strings representing the combat events and their results
-    """
+
     enemy = Enemy(
         name=enemy_data["name"],
         health=enemy_data["health"],
