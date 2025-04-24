@@ -177,7 +177,7 @@ class GameGUI:
                 # This part was pretty much redone from the ground up because initially it tried to measure length of the columns
                 # Then once it did get rows it got the wrong length and made it a print statement
                 # I added the not second_row and the len != 5 part so it got the stats needed
-                # I also reworked it to to pop up an error box so it wouldn't pop up the IDE with the print statement
+                # I also reworked it to pop up an error box so it wouldn't pop up the IDE with the print statement
                 if not second_row or len(second_row) != 5:
                     messagebox.showerror("Load Error", "Invalid data in the save file! Information most likely missing or corrupted.")
                     return
