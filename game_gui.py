@@ -29,7 +29,9 @@ class GameGUI:
         self.enemy = None
         # My Work
         self.create_widgets()
+        self.scenario_counter = 0
         self.start_new_scenario()
+
     def create_widgets(self):
         # AI Sourced
         self.stats_frame = ttk.LabelFrame(self.root, text="Player Stats", padding=10)
@@ -40,6 +42,8 @@ class GameGUI:
         # My work
         self.power_label = ttk.Label(self.stats_frame, text=f"Power: {self.player.power}")
         self.power_label.pack(anchor="w")
+        self.block_chance_label = ttk.Label(self.stats_frame, text=f"Block Chance: {self.player.block_chance}")
+        self.block_chance_label.pack(anchor="w")
         # My work
         self.gold_label = ttk.Label(self.stats_frame, text=f"Gold: {self.player.gold}")
         self.gold_label.pack(anchor="w")
@@ -82,6 +86,14 @@ class GameGUI:
     And I didn't want to use AI for that part because I didn't want to mess with it by that point
     """
     def start_new_scenario(self):
+        self.scenario_counter += 1
+        print(self.scenario_counter)
+        if self.scenario_counter % 5 == 0:
+            self.player.power += 10
+            if self.player.block_chance < 50:
+                self.player.block_chance += 5
+            else:
+                self.player.block_chance = 50
         self.current_scenario = random_scenarios(self.player)
         scenario_description = f"{self.current_scenario['description']}\n"
         self.scenario_text.config(state="normal")
@@ -131,6 +143,7 @@ class GameGUI:
         """
         self.health_label.config(text=f"Health: {self.player.health}")
         self.power_label.config(text=f"Power: {self.player.power}")
+        self.block_chance_label.config(text=f"Block Chance: {self.player.block_chance}")
         self.gold_label.config(text=f"Gold: {self.player.gold}")
     def end_game(self):
         # Ends game and closes out
@@ -138,7 +151,7 @@ class GameGUI:
         self.root.quit()
     def quit_game(self):
 
-        confirm = messagebox.askyesno("Quit Game", "Are you sure you want to quit?")
+        confirm = messagebox.askyesno("Quit Game", "Are you sure you want to quit?\n\nUnsaved progress will be lost.")
         if confirm:
             self.root.quit()  # Close the window
     def save_game(self) -> None:

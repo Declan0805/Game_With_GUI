@@ -31,14 +31,14 @@ def random_scenarios(player) -> dict:
                 "run": {
                     "success": {"description": "You escaped safely, avoiding conflict.", "health": 0, "gold": 0},
                     "failure": {"description": "You tripped while running and got injured!", "health": -10, "gold": 0},
-                    "chance": 90
+                    "chance": 85
                 },
                 "parley": {
                     "success": {"description": "You bribed the goblins, and they let you go.", "health": 0,
                                 "gold": -20},
                     "failure": {"description": "The goblins took your gold and still attacked!", "health": -15,
                                 "gold": -20},
-                    "chance": 60
+                    "chance": 50
                 }
             }
         },
@@ -48,20 +48,20 @@ def random_scenarios(player) -> dict:
                 "open": {
                     "success": {"description": "You unlocked it and found precious gems!", "health": 0, "gold": 100},
                     "failure": {"description": "The chest was trapped. You got injured!", "health": -15, "gold": 0},
-                    "chance": 50
+                    "chance": 60
                 },
                 "ignore": {
                     "success": {"description": "You wisely avoided the chest—sometimes caution pays off.", "health": 0,
                                 "gold": 0},
                     "failure": {"description": "You left behind what could have been treasure.", "health": 0,
                                 "gold": 0},
-                    "chance": 100
+                    "chance": 50
                 },
                 "smash": {
-                    "success": {"description": "You smashed the chest open and grabbed the loot!", "health": 0,
+                    "success": {"description": "You smashed the chest open and grabbed the loot!\nHowever some of the loot was broken when you smashed it open", "health": 0,
                                 "gold": 75},
                     "failure": {"description": "The chest exploded! It was trapped.", "health": -10, "gold": 0},
-                    "chance": 60
+                    "chance": 50
                 }
             }
         },
@@ -82,6 +82,30 @@ def random_scenarios(player) -> dict:
                     "chance": 100
                 }
             }
+        },
+        5: {
+            "description": "You encounter a massive dragon blocking the road ahead!\n(Recommended Health:300, Recommended Power: 80",
+            "results": {
+                "fight": {
+                    "enemy": {"name": "Dragon", "health": 500, "power": 30,"block_chance": 30, "reward_gold": 50},
+                    "success": {"description": "You defeated the goblins and looted gold!", "health": 0, "gold": 50},
+                    "failure": {"description": "The goblins overwhelmed you, and you fled injured.", "health": -20,
+                                "gold": 0},
+                    "chance": 70
+                },
+                "run": {
+                    "success": {"description": "You escaped safely, avoiding conflict.", "health": 0, "gold": 0},
+                    "failure": {"description": "You tripped while running and got injured!", "health": -10, "gold": 0},
+                    "chance": 80
+                },
+                "parley": {
+                    "success": {"description": "You bribed the goblins, and they let you go.", "health": 0,
+                                "gold": -20},
+                    "failure": {"description": "The goblins took your gold and still attacked!", "health": -15,
+                                "gold": -20},
+                    "chance": 50
+                }
+            }
         }
     }
 
@@ -99,7 +123,7 @@ def resolve_action(player, action) -> dict:
 
     Takes in the player object and the action dictionary.
 
-    Then it returns the action dictionary and any changes to the player's health and gold.'
+    Then it returns the action dictionary and any changes to the player's health and gold.
     """
     roll = random.randint(1, 100)
     if roll <= action["chance"]:  # Success
