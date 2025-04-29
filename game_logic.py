@@ -88,8 +88,8 @@ def random_scenarios(player) -> dict:
             "results": {
                 "fight": {
                     "enemy": {"name": "Dragon", "health": 500, "power": 30,"block_chance": 30, "reward_gold": 50},
-                    "success": {"description": "You defeated the goblins and looted gold!", "health": 0, "gold": 50},
-                    "failure": {"description": "The goblins overwhelmed you, and you fled injured.", "health": -20,
+                    "success": {"description": "You defeated the Dragon and looted gold!", "health": 0, "gold": 50},
+                    "failure": {"description": "The Dragon overwhelmed you, and you fled injured.", "health": -20,
                                 "gold": 0},
                     "chance": 70
                 },
