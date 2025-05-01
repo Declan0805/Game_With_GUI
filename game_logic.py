@@ -21,19 +21,19 @@ def random_scenarios(player) -> dict:
         1: {
             "description": "You encounter a group of goblins ambushing the road ahead!",
             "results": {
-                "fight": {
+                "Fight": {
                     "enemy": {"name": "Goblin", "health": 100, "power": 10, "reward_gold": 50},
                     "success": {"description": "You defeated the goblins and looted gold!", "health": 0, "gold": 50},
                     "failure": {"description": "The goblins overwhelmed you, and you fled injured.", "health": -20,
                                 "gold": 0},
                     "chance": 70
                 },
-                "run": {
+                "Run": {
                     "success": {"description": "You escaped safely, avoiding conflict.", "health": 0, "gold": 0},
                     "failure": {"description": "You tripped while running and got injured!", "health": -10, "gold": 0},
                     "chance": 85
                 },
-                "parley": {
+                "Parley": {
                     "success": {"description": "You bribed the goblins, and they let you go.", "health": 0,
                                 "gold": -20},
                     "failure": {"description": "The goblins took your gold and still attacked!", "health": -15,
@@ -45,19 +45,19 @@ def random_scenarios(player) -> dict:
         2: {
             "description": "You find a locked treasure chest in an abandoned loot pile.",
             "results": {
-                "open": {
+                "Open": {
                     "success": {"description": "You unlocked it and found precious gems!", "health": 0, "gold": 100},
                     "failure": {"description": "The chest was trapped. You got injured!", "health": -15, "gold": 0},
                     "chance": 60
                 },
-                "ignore": {
+                "Ignore": {
                     "success": {"description": "You wisely avoided the chest—sometimes caution pays off.", "health": 0,
                                 "gold": 0},
                     "failure": {"description": "You left behind what could have been treasure.", "health": 0,
                                 "gold": 0},
                     "chance": 50
                 },
-                "smash": {
+                "Smash": {
                     "success": {"description": "You smashed the chest open and grabbed the loot!\nHowever some of the loot was broken when you smashed it open", "health": 0,
                                 "gold": 75},
                     "failure": {"description": "The chest exploded! It was trapped.", "health": -10, "gold": 0},
@@ -68,7 +68,7 @@ def random_scenarios(player) -> dict:
         4: {  # Rest scenario
             "description": "You find a quiet spot to rest and gather your thoughts.",
             "results": {
-                "heal": {
+                "Heal": {
                     "success": {"description": "You recover some health during your rest.", "health": 20, "gold": 0},
                     "failure": {"description": "You couldn’t rest properly due to nearby noises.", "health": 0,
                                 "gold": 0},
@@ -86,19 +86,19 @@ def random_scenarios(player) -> dict:
         5: {
             "description": "You encounter a massive dragon blocking the road ahead!\n(Recommended Health:300, Recommended Power: 80",
             "results": {
-                "fight": {
+                "Fight": {
                     "enemy": {"name": "Dragon", "health": 500, "power": 30,"block_chance": 30, "reward_gold": 50},
                     "success": {"description": "You defeated the Dragon and looted gold!", "health": 0, "gold": 50},
                     "failure": {"description": "The Dragon overwhelmed you, and you fled injured.", "health": -20,
                                 "gold": 0},
                     "chance": 70
                 },
-                "run": {
+                "Run": {
                     "success": {"description": "You escaped safely, avoiding conflict.", "health": 0, "gold": 0},
                     "failure": {"description": "You tripped while running and got injured!", "health": -10, "gold": 0},
                     "chance": 80
                 },
-                "parley": {
+                "Parley": {
                     "success": {"description": "You bribed the goblins, and they let you go.", "health": 0,
                                 "gold": -20},
                     "failure": {"description": "The goblins took your gold and still attacked!", "health": -15,
