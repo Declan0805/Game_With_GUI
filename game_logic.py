@@ -94,6 +94,30 @@ def random_scenarios() -> dict:
                     "chance": 50
                 }
             }
+        },
+        6: {  # Rest scenario
+            "description": "You find a wandering merchant who appears to be selling potions",
+            "results": {
+                "Purchase": {
+                    "success": {"description": "The potion heals you", "health": 20, "gold": -10},
+                    "failure": {"description": "The potion makes you sick", "health": -10,
+                                "gold": -10},
+                    "chance": 50
+                },
+                "Rob": {
+                    "success": {"description": "You successfully rob the merchant and take his gold and a potion.",
+                                "health": 10, "gold": 25},
+                    "failure": {"description": "You attempt to rob the merchant but it goes wrong. He stabs you in the arm as you attempt to pickpocket him.",
+                                "health": -20, "gold": 0},
+                    "chance": 10
+                },
+                "Leave": {
+                    "success": {"description": "You leave the merchant behind.",
+                                "health": 0, "gold": 0},
+                    "failure": {"description": "NaN", "health": 0, "gold": 0},
+                    chance: 100
+                }
+            }
         }
     }
 
