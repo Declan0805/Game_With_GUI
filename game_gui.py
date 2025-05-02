@@ -105,9 +105,14 @@ class GameGUI:
         self.scenario_text.insert(tk.END, scenario_description)
         self.scenario_text.config(state="disabled")
 
-        for i, action in enumerate(self.current_scenario["results"].keys()):
-            self.actions[i].config(text=action, state=tk.NORMAL)
+        # Update action buttons based on affordability
+        for i, (action_name, action) in enumerate(self.current_scenario["results"].items()):
+            if self.player.can_afford_action(action):
+                self.actions[i].config(text=action_name, state=tk.NORMAL)
+            else:
+                self.actions[i].config(text=f"{action_name} (Not enough gold)", state=tk.DISABLED)
 
+        # Disable any remaining action buttons
         for i in range(len(self.current_scenario["results"]), len(self.actions)):
             self.actions[i].config(state=tk.DISABLED)
     def handle_action_ui(self, action_index: int) -> None:
@@ -193,7 +198,7 @@ class GameGUI:
 
                 messagebox.showinfo("Game Saved", "Game data saved successfully.")
         except PermissionError: # My work
-            print("Please close out of the csv before saving the game.")
+            messagebox.showerror("Save Error", "Please close out of the csv before saving the game.")
     def load_game(self) -> None:
         """
         Game load logic below:

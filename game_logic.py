@@ -4,7 +4,7 @@ import random
 
 
 
-def random_scenarios() -> dict:
+def random_scenarios(player: Player) -> dict:
     scenarios = {
         1: {
             "description": "You encounter a group of goblins ambushing the road ahead!",
@@ -115,12 +115,46 @@ def random_scenarios() -> dict:
                     "success": {"description": "You leave the merchant behind.",
                                 "health": 0, "gold": 0},
                     "failure": {"description": "NaN", "health": 0, "gold": 0},
-                    chance: 100
+                    "chance": 100
+                }
+            }
+        },
+        7: {  # Rest scenario
+            "description": "You find a pile of gold, see if you can get it.",
+            "results": {
+                "Grab": {
+                    "success": {"description": "You get the gold.", "health": 0, "gold": 1000},
+                    "failure": {"description": "The gold vanishes.", "health": 0,
+                                "gold": 0},
+                    "chance": random.randint(1,100)
+                },
+                "Swipe": {
+                    "success": {"description": "You get the gold.",
+                                "health": 0, "gold": 1000},
+                    "failure": {"description": "The gold vanishes.",
+                                "health": 0, "gold": 0},
+                    "chance": random.randint(10,50)
+                },
+                "Steal": {
+                    "success": {"description": "You get the gold.",
+                                "health": 0, "gold": 1000},
+                    "failure": {"description": "The gold vanishes.", "health": 0, "gold": 0},
+                    "chance": random.randint(1,10)
+                }
+            }
+        },
+        8: {
+            "description": "You have a chance here to spend all your gold and get a blessing granting you 1000 health or lose all your health.",
+            "results": {
+                "Offer to the Shrine": {
+                    "success": {"description": "You are blessed.", "health": 1000, "gold": -player.gold if player.gold > 0 else -10},
+                    "failure": {"description": "Lightning bolts come down from the sky and strike you down.", "health": -1000000000000000000000000,
+                                "gold": -player.gold if player.gold > 0 else -10},
+                    "chance": random.randint(1,100)
                 }
             }
         }
     }
-
 
     scenario_keys = list(scenarios.keys())
     selected_key = random.choices(scenario_keys)[0]
