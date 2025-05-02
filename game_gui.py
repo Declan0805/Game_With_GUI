@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import csv
 import game_logic
-from game_classes import Player
+from player import Player
 from game_logic import handle_combat, random_scenarios
 
 
@@ -18,7 +18,7 @@ began work on the savegame and loadgame logic so I just continued here because I
 
 """
 class GameGUI:
-    def __init__(self, root):
+    def __init__(self, root) -> None:
         self.root = root
         self.root.title("Game GUI")
         # My work
@@ -32,7 +32,7 @@ class GameGUI:
         self.scenario_counter = 0
         self.start_new_scenario()
 
-    def create_widgets(self):
+    def create_widgets(self) -> None:
         # AI Sourced
         self.stats_frame = ttk.LabelFrame(self.root, text="Player Stats", padding=10)
         self.stats_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
@@ -110,7 +110,7 @@ class GameGUI:
 
         for i in range(len(self.current_scenario["results"]), len(self.actions)):
             self.actions[i].config(state=tk.DISABLED)
-    def handle_action_ui(self, action_index):
+    def handle_action_ui(self, action_index: int) -> None:
         # Disable action buttons
         for btn in self.actions:
             btn.config(state=tk.DISABLED)
@@ -149,7 +149,7 @@ class GameGUI:
         # Enable continue button
         self.continue_button.config(state=tk.NORMAL)
 
-    def continue_to_next_scenario(self):
+    def continue_to_next_scenario(self) -> None:
         # Disable continue button
         self.continue_button.config(state=tk.DISABLED)
         
@@ -159,7 +159,7 @@ class GameGUI:
         else:
             self.end_game()
 
-    def update_player_stats(self):
+    def update_player_stats(self) -> None:
         """
         Updates the stats within the UI frame
         Only the Health, Power, and Gold labels are displayed and updated as of now
@@ -169,14 +169,14 @@ class GameGUI:
         self.power_label.config(text=f"Power: {self.player.power}")
         self.block_chance_label.config(text=f"Block Chance: {self.player.block_chance}")
         self.gold_label.config(text=f"Gold: {self.player.gold}")
-    def end_game(self):
+    def end_game(self) -> None:
         # Ends game and closes out
         self.scenario_text.config(state="normal")
         self.scenario_text.delete(1.0, tk.END)
         self.scenario_text.insert(tk.END, "Thanks for playing!")
         self.scenario_text.config(state="disabled")
         self.root.after(2000, self.root.quit)  # Close window after 2 seconds
-    def quit_game(self):
+    def quit_game(self) -> None:
 
         confirm = messagebox.askyesno("Quit Game", "Are you sure you want to quit?\n\nUnsaved progress will be lost.")
         if confirm:

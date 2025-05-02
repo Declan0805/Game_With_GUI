@@ -1,22 +1,10 @@
-from game_classes import Player, Enemy
+from player import Player
+from enemy import Enemy
 import random
 
 
 
-class Item:
-    def __init__(self, name, key, equipment_type=None):
-        self.name = name
-        self.key = key
-        self.equipment_type = equipment_type
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return self.name
-
-
-def random_scenarios(player) -> dict:
+def random_scenarios() -> dict:
     scenarios = {
         1: {
             "description": "You encounter a group of goblins ambushing the road ahead!",
@@ -70,7 +58,7 @@ def random_scenarios(player) -> dict:
             "results": {
                 "Heal": {
                     "success": {"description": "You recover some health during your rest.", "health": 20, "gold": 0},
-                    "failure": {"description": "You couldn’t rest properly due to nearby noises.", "health": 0,
+                    "failure": {"description": "You couldn't rest properly due to nearby noises.", "health": 0,
                                 "gold": 0},
                     "chance": 100
                 },
