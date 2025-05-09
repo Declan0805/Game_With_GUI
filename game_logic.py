@@ -185,19 +185,19 @@ def resolve_action(player, action) -> dict:
 
 
 def handle_combat(player, enemy_data) -> dict:
-
+    # Creates object from the enemy data listed in the scenario.
     enemy = Enemy(
         name=enemy_data["name"],
         health=enemy_data["health"],
         power=enemy_data["power"],
-        block_chance=enemy_data.get("block_chance", 25),
+        block_chance=enemy_data.get("block_chance", 25), # If no block_chance is implemented it defaults to 25
         reward_gold=enemy_data["reward_gold"]
     )
 
     combat_log = []
 
     while enemy.is_alive() and player.is_alive():
-        # Player attack
+        # Player attack, checks if blocked
         win_chance = random.randint(1, 100)
         if win_chance > enemy.block_chance:
             damage = player.power
@@ -206,7 +206,7 @@ def handle_combat(player, enemy_data) -> dict:
         else:
             combat_log.append(f"The {enemy.name} blocked your attack!")
 
-        # Enemy attack
+        # Enemy attack, also checks if blocked
         enemy_win_chance = random.randint(1, 100)
         if enemy_win_chance > player.block_chance:
             player.health -= enemy.power
@@ -230,7 +230,7 @@ def handle_combat(player, enemy_data) -> dict:
 
 
 if __name__ == "__main__":
-    # For standalone testing purposes
+    # For standalone testing purposes, needs redone to be useful due to affordability checking that wasn't implemented into this portion
     player = Player("Hero", 100, 25, 20, 0)
 
 

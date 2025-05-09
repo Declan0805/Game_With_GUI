@@ -1,5 +1,6 @@
 import random
-
+# NOTE - Some of the below functions exist for testing that was done outside the GUI in earlier versions.
+# Won't remove because testing may still need to be done.
 class Player:
     def __init__(self, name: str, health: int, power: int, block_chance: int, gold: int) -> None:
         self.name = name
@@ -18,7 +19,7 @@ class Player:
         else:
             return False
 
-    def heal(self) -> None:
+    def heal(self) -> None: # Scenario handles now, but again- could pass in a utility here for testing purposes to make sure the character heals properly- or return a debugging printout
         pass
 
     def see_gold(self) -> int:
@@ -41,6 +42,7 @@ class Player:
             bool: True if the player can afford the action, False otherwise
         """
         # Check success case gold cost
+
         success_cost = action.get("success", {}).get("gold", 0)
         if success_cost < 0 and abs(success_cost) > self.gold:
             return False

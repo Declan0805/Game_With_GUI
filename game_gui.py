@@ -59,9 +59,19 @@ class GameGUI:
         # Action buttons - AI sources
         self.actions_frame = ttk.Frame(self.root)
         self.actions_frame.grid(row=1, column=0, columnspan=3, pady=20)
-
+        """
+        The below dynamic typing system works by creating a list of buttons 
+        and then dynamically adding them to the frame
+        It starts with an initializing an empty named list called actions
+        Then it loops through a range of numbers from 0 to 3 
+        (Can Be changed to higher if anybody ever adds more actions)
+        Inside the loop it creates a button with the text Action 1, Action 2, etc.
+        It then adds the button to the actions list and then adds it to the frame
+        Later on the text inside the button changes to whatever the appropriate action is
+        This is just an initialization system for the later scenarios to change the precreated button
+        """
         self.actions = []
-        for i in range(3):  # Create up to 3 action buttons - Done by AI
+        for i in range(3):  # Create up to 3 action buttons dynamically - Done by AI
             btn = ttk.Button(self.actions_frame, text=f"Action {i + 1}",
                              command=lambda idx=i: self.handle_action_ui(idx))
             btn.grid(row=1, column=i, padx=10)
@@ -92,32 +102,36 @@ class GameGUI:
     """
     def start_new_scenario(self) -> None:
         self.scenario_counter += 1
-        print(self.scenario_counter)
+        print(self.scenario_counter) # DEBUG - Prints out scenario count to make sure it counts currectly
+        # This If statement uses the scenario counter to add player power every 5 scenarios, this is used to create a progression system for the character
+
         if self.scenario_counter % 5 == 0:
-            self.player.power += 10
-            if self.player.block_chance < 50:
-                self.player.block_chance += 5
+            self.player.power += 10 # Increases player power by 10 every 5 scenarios
+            print(f"Power is now {self.player.power}") # DEBUG
+            if self.player.block_chance < 50: # Checks if block chance is below 50
+                self.player.block_chance += 5 # Adds 5 if it is
             else:
-                self.player.block_chance = 50
-        self.current_scenario = random_scenarios(self.player)
+                self.player.block_chance = 50 # Sets it to 50 if it isn't
+        self.current_scenario = random_scenarios(self.player) # Function from game_logic.py
+        # All below text is what you see in the scenarios frame
         scenario_description = f"{self.current_scenario['description']}\n"
         self.scenario_text.config(state="normal")
         self.scenario_text.delete(1.0, tk.END)
         self.scenario_text.insert(tk.END, scenario_description)
         self.scenario_text.config(state="disabled")
 
-        # Update action buttons based on affordability
+        # Update action buttons based on affordability=(GOLD SCENARIOS) else just leaves the button alone
         for i, (action_name, action) in enumerate(self.current_scenario["results"].items()):
             if self.player.can_afford_action(action):
                 self.actions[i].config(text=action_name, state=tk.NORMAL)
             else:
                 self.actions[i].config(text=f"{action_name} (Not enough gold)", state=tk.DISABLED)
 
-        # Disable any remaining action buttons
+        # Disable any remaining action buttons (That don't require gold but also aren't present in the scenario)
         for i in range(len(self.current_scenario["results"]), len(self.actions)):
             self.actions[i].config(state=tk.DISABLED)
     def handle_action_ui(self, action_index: int) -> None:
-        # Disable action buttons
+        # Disable action buttons when clicked
         for btn in self.actions:
             btn.config(state=tk.DISABLED)
 
@@ -127,7 +141,7 @@ class GameGUI:
         
         # This begins combat and loops through the combat messages until either the enemy or the player is dead
         if "enemy" in action:
-            # If the action involves combat
+            # If the action involves an enemy begin combat
             combat_result = handle_combat(self.player, action["enemy"])
 
             # Show combat log results in scenario text
@@ -135,7 +149,7 @@ class GameGUI:
             self.scenario_text.delete(1.0, tk.END)
             self.scenario_text.insert(tk.END, "\n".join(combat_result["combat_log"]))
             self.scenario_text.config(state="disabled")
-
+            # Ends game when user clicks continue after dying - Defeat Logic
             if combat_result["status"] == "defeat":
                 self.scenario_text.config(state="normal")
                 self.scenario_text.insert(tk.END, "\n\nYou Have Died")
@@ -143,23 +157,23 @@ class GameGUI:
                 self.continue_button.config(state=tk.NORMAL, command=self.end_game)
                 return
         else:
-            # If the action doesn't involve an enemy, resolve it
+            # If the action doesn't involve an enemy, resolve it normally by chance system
             result = game_logic.resolve_action(self.player, action)
             self.scenario_text.config(state="normal")
             self.scenario_text.delete(1.0, tk.END)
             self.scenario_text.insert(tk.END, result["description"])
             self.scenario_text.config(state="disabled")
-
+        # Updates player stats after every scenario.
         self.update_player_stats()
 
         # Enable continue button
         self.continue_button.config(state=tk.NORMAL)
 
     def continue_to_next_scenario(self) -> None:
-        # Disable continue button
+        # Disable continue button before continuing
         self.continue_button.config(state=tk.DISABLED)
         
-        # Checks if the player is alive otherwise ends game
+        # Checks if the player is alive otherwise ends game (Security to make sure the game ends if the player dies outside of combat which is possible)
         if self.player.is_alive():
             self.start_new_scenario()
         else:
@@ -223,13 +237,13 @@ class GameGUI:
                     return
 
                 # Get the data row
-                data_row = next(reader, None)
-                if not data_row or len(data_row) != 5:
+                data_row = next(reader, None) # FIXED
+                if not data_row or len(data_row) != 5: # FIXED
                     messagebox.showerror("Load Error", "Invalid data in the save file! Information most likely missing or corrupted.")
                     return
 
                 # Validate data types
-                try:
+                try: # AI HELPED
                     name = data_row[0]
                     health = int(data_row[1])
                     power = int(data_row[2])
@@ -246,7 +260,7 @@ class GameGUI:
                 self.player.block_chance = block_chance
                 self.player.gold = gold
 
-                self.update_player_stats()
+                self.update_player_stats() # FIXED, WAS IN THE WRONG ORDER
                 self.start_new_scenario()
                 messagebox.showinfo("Game Loaded", "Game data loaded successfully!")
 
