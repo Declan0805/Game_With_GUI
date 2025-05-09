@@ -8,6 +8,7 @@ from game_logic import handle_combat, random_scenarios
 
 """
 All buttons and general window information came from me
+(Except for dynamic buttons)
 The aesthetic elements were sourced partly but not entirely by an AI source
 Errors in SaveGame and LoadGame logic were partly aided but AI but AI got a decent amount of it wrong so I did most of the work in the end
 All Scenario information was done by me unless any major errors occurred in the code that I couldn't weed through
@@ -60,7 +61,7 @@ class GameGUI:
         self.actions_frame.grid(row=1, column=0, columnspan=3, pady=20)
 
         self.actions = []
-        for i in range(3):  # Create up to 3 action buttons
+        for i in range(3):  # Create up to 3 action buttons - Done by AI
             btn = ttk.Button(self.actions_frame, text=f"Action {i + 1}",
                              command=lambda idx=i: self.handle_action_ui(idx))
             btn.grid(row=1, column=i, padx=10)
