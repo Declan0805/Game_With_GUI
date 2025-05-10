@@ -162,7 +162,10 @@ def random_scenarios(player: Player) -> dict:
                     "failure": {"description": "Lightning bolts come down from the sky and strike you down.", "health": -1000000000000000000000000,
                                 "gold": -player.gold if player.gold > 0 else -10},
                     "chance": random.randint(1,100)
-                }
+                },
+                "Leave": {"success": {"description": "You leave the campsite.", "health": 0, "gold": 0},
+                          "failure": {"description": "NaN", "health": 0, "gold": 0}, "chance": 100},
+                            "chance": 100
             }
         }
     }
