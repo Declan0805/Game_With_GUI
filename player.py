@@ -35,11 +35,11 @@ class Player:
         """
         Checks if the player can afford an action based on its gold cost.
         
-        Takes in the actions from the dictionary to find the results that require money (i.e. Parley):
-            action (dict): The action dictionary containing success/failure outcomes
+        Takes in the actions from the dictionary to find the results that require money,
+        (i.e. Parley),
+        action (dict): The action dictionary containing success/failure outcomes
             
-        Returns:
-            bool: True if the player can afford the action, False otherwise
+        Returns a boolean indicating whether the player can afford the action.
         """
         # Check success case gold cost
 

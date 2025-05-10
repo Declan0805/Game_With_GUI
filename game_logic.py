@@ -5,6 +5,17 @@ import random
 
 
 def random_scenarios(player: Player) -> dict:
+    """
+    Provides a random scenario from a predefined dictionary of possible scenarios
+
+    Each scenario contains a description and potential outcomes based on the player's choices,
+    such as actions they can take.
+    Each action may lead to success or failure, which impacts the player's health or gold.
+    The success of these outcomes is determined using the random.choice method.
+    Returns a dictionary representing the selected scenario.
+    The scenario contains a description and possible-
+    results (actions and outcomes), including success and failure outcomes for each action.
+    """
     scenarios = {
         1: {
             "description": "You encounter a group of goblins ambushing the road ahead!",

@@ -131,6 +131,17 @@ class GameGUI:
         for i in range(len(self.current_scenario["results"]), len(self.actions)):
             self.actions[i].config(state=tk.DISABLED)
     def handle_action_ui(self, action_index: int) -> None:
+        """
+        Handles the interaction logic when a specific action is selected by the player in the UI
+        Disables action buttons
+        Processes the chosen action including potential combat
+        updates the scenario output
+        and player statistics, and enables the continuation of the game flow
+
+        Parameter - action_index: The index of the selected action from the action buttons list
+
+        """
+
         # Disable action buttons when clicked
         for btn in self.actions:
             btn.config(state=tk.DISABLED)
@@ -208,12 +219,13 @@ class GameGUI:
                 # AI used for a refresher but not as the source
                 writer = csv.writer(game_file)
                 # I chose rows over columns because it was simpler and could be used if I decided to work on it more to make room for more saves later on
-                writer.writerow(["Name", "Health", "Power", "Block Chance", "Gold"])
-                writer.writerow([self.player.name, self.player.health, self.player.power, self.player.block_chance, self.player.gold])
+
+                writer.writerow(["Name", "Health", "Power", "Block Chance", "Gold"]) # First row labels
+                writer.writerow([self.player.name, self.player.health, self.player.power, self.player.block_chance, self.player.gold]) # Player info
 
                 messagebox.showinfo("Game Saved", "Game data saved successfully.")
         except PermissionError: # My work
-            messagebox.showerror("Save Error", "Please close out of the csv before saving the game.")
+            messagebox.showerror("Error Saving Game", "Please close out of the csv before saving the game.")
     def load_game(self) -> None:
         """
         Game load logic below:
