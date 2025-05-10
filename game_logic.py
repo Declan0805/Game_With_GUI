@@ -196,6 +196,27 @@ def resolve_action(player, action) -> dict:
 
 
 def handle_combat(player, enemy_data) -> dict:
+    """
+    Handles a turn-based combat sequence between a player and an enemy.
+
+    The combat system alternates between the player and the enemy attacking
+    each other, taking into account block chances for both sides. The combat
+    ends in either victory or defeat depending on the health of the combatants.
+    Victory rewards the player with gold, while defeat ends the game. A combat
+    log is maintained to describe all actions and outcomes during the fight. The log is used
+    by the GUI to display the combat history for the scenario, provides some immersion
+
+
+
+    Returns a dictionary containing the combat status and the combat log.
+        The keys include:
+            - status (str): Indicates the final combat state, which may be
+             'victory', 'defeat', or 'ongoing'.
+
+            - combat_log (list): A list of strings detailing each combat event including attacks,
+            blocks, and final outcomes.
+    """
+
     # Creates object from the enemy data listed in the scenario.
     enemy = Enemy(
         name=enemy_data["name"],
