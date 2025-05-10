@@ -163,9 +163,9 @@ def random_scenarios(player: Player) -> dict:
                                 "gold": -player.gold if player.gold > 0 else -10},
                     "chance": random.randint(1,100)
                 },
-                "Leave": {"success": {"description": "You leave the campsite.", "health": 0, "gold": 0},
-                          "failure": {"description": "NaN", "health": 0, "gold": 0}, "chance": 100},
-                            "chance": 100
+                "Leave": {
+                    "success": {"description": "You leave the campsite.", "health": 0, "gold": 0},
+                    "failure": {"description": "NaN", "health": 0, "gold": 0}, "chance": 100}
             }
         }
     }
